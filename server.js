@@ -20,11 +20,17 @@ app.use(express.static("public"));
 
 mongoose.connect(MONGODB_URI);  
 
+
+console.log("\n***********************************\n" +
+            "Grabbing every thread name and link\n" +
+            "from reddit's webdev board:" +
+            "\n***********************************\n");
+
 app.get("/scrape", (req, res)=> {
-   axios.get("http://www.echojs.com/")
+   axios.get("https://www.democracynow.org")
    .then(response => {
     var $ = cheerio.load(response.data);
 
-    
+
    })
 })
