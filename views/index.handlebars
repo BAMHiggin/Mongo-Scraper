@@ -1,12 +1,41 @@
-<div id="wrapper">
-    <h1>Note Scraper</h1>
-    <h2><i>If you can do this...the homework should be no problem.</i></h2>
-      {{#each articles}}
-      <a href="{{link}}">{{title}}</a>
-      <br>
-      <br>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <a id="navbar-brand" class="navbar-brand btn text-white" href="#">NUWS</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a id="nav-btn" class="nav-link text-dark btn btn-light" href="#">Saved Articles <span
+            class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a id="nav-btn" class="nav-link text-dark btn btn-light" href="#">Scrape New Articles</a>
+      </li>
+      <li class="nav-item">
+        <a id="nav-btn" class="nav-link text-dark btn btn-light" href="#">Clear Articles</a>
+      </li>
+    </ul>
 
-      {{/each}}
-    <div id="articles"></div>
-    <div id="notes"></div>
+  </div>
+</nav>
+
+<div class="jumbotron jumbotron-fluid text-center text-light shadow mb-5 rounded">
+  <div class="container">
+    <h1 class="display-4">NUWS Aggregator</h1>
+    <p class="lead"><i>Wildcat News, Research, Happenings</i></p>
+  </div>
+</div>
+
+
+<div class="container">
+
+  <div id="wrapper">
+    {{#each articles}}
+    <a href="{{link}}">{{title}}</a>
+    <br>
+    <br>
+    {{/each}}
+  </div>
 </div>

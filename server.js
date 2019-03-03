@@ -3,30 +3,29 @@
 //Dependencies
 
 
-var express = require("express");
-var mongoose = require("mongoose");
-var logger = require("morgan");
-var axios = require("axios");
-var cheerio = require("cheerio");
+const express = require("express");
+const mongoose = require("mongoose");
+const logger = require("morgan");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 //handlebars setup
 const exphbs = require("express-handlebars");
 
-
 //requiring models
-var db = require("./models");
+const db = require("./models");
 
 //custom port or 3000 port
-var PORT = process.env.PORT || "3000";
+const PORT = process.env.PORT || "3000";
 
-var app = express();
+const app = express();
 
 //handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 //Will use deployed database, else use local
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 /////////////
 
@@ -57,15 +56,15 @@ app.get("/", (req, res) => {
         })
 });
 
-
+//Getting scraped data
 app.get("/scrape", (req, res) => {
     axios.get("https://news.northwestern.edu/") 
         .then(response => {
-            var $ = cheerio.load(response.data);
+            let $ = cheerio.load(response.data);
 
             $("article h4").each(function (i, element) {
                 //saves empty object
-                var result = {};
+                let result = {};
 
                 //grabs texts and links
                 result.title = $(this)
@@ -85,10 +84,10 @@ app.get("/scrape", (req, res) => {
                 result.link = linkURL;
 
                 db.Article.create(result)
-                    .then(function (dbArticle) {
+                    .then((dbArticle) => {
                         console.log(dbArticle);
                     })
-                    .catch(function (err) {
+                    .catch((err) => {
                         console.log(err);
                     });
             });
@@ -101,51 +100,51 @@ app.get("/scrape", (req, res) => {
 // Grabbing all articles from db
 app.get("/articles", (req, res) => {
     db.Article.find({})
-        .then(function (dbArticle) {
+        .then((dbArticle) => {
             res.json(dbArticle);
         })
-        .catch(function (err) {
+        .catch((err) => {
             res.json(err);
         });
 });
-//TODO: see if this works commented out once functional
+
 
 // grabbing specific article by ID, populate with it's note
 
 app.get("/articles/:id", (req, res) => {
     db.Article.findOne({ _id: req.params.id })
         .populate("note")
-        .then(function (dbArticle) {
+        .then((dbArticle) => {
             // If we were able to successfully find an Article with the given id, send it back to the client
             res.json(dbArticle);
         })
-        .catch(function (err) {
+        .catch((err) => {
             // If an error occurred, send it to the client
             res.json(err);
         });
 });
 
 // Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function (req, res) {
+app.post("/articles/:id", (req, res) => {
     // Create a new note and pass the req.body to the entry
     db.Note.create(req.body)
-        .then(function (dbNote) {
+        .then((dbNote) => {
             // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
             // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
             // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
             return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
         })
-        .then(function (dbArticle) {
+        .then((dbArticle) => {
             // If we were able to successfully update an Article, send it back to the client
             res.json(dbArticle);
         })
-        .catch(function (err) {
+        .catch((err) => {
             // If an error occurred, send it to the client
             res.json(err);
         });
 });
 
 
-app.listen(PORT, function () {
+app.listen(PORT, () => {
     console.log("App running on port " + PORT + "!");
 });
