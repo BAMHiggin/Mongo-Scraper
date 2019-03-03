@@ -1,3 +1,11 @@
+const express = require("express");
+const exphbs = require("express-handlebars");
+
+
+$.get("/", function (req, res) {
+      res.render("index", exphbs);
+  });
+
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
     // For each one
@@ -6,7 +14,7 @@ $.getJSON("/articles", function(data) {
       $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
     }
   });
-  
+
   
   // Whenever someone clicks a p tag
   $(document).on("click", "p", function() {
