@@ -57,8 +57,9 @@ app.get("/", (req, res) => {
         })
 });
 
+
 app.get("/scrape", (req, res) => {
-    axios.get("https://news.northwestern.edu/")
+    axios.get("https://news.northwestern.edu/") 
         .then(response => {
             var $ = cheerio.load(response.data);
 
@@ -70,9 +71,18 @@ app.get("/scrape", (req, res) => {
                 result.title = $(this)
                     .children("a")
                     .text();
-                result.link = $(this)
-                    .children("a")
-                    .attr("href");
+
+
+                //IMPORTANT - hrefs for certain links only produced a relative path
+                // if statement below adds 'www.news.northwestern.edu' to any url result that doesn't produce a complete URL
+                let linkURL = $(this)
+                .children("a")
+                .attr("href");
+
+                if (linkURL[0] === '/') {
+                    linkURL = 'https://news.northwestern.edu' + linkURL;
+                }
+                result.link = linkURL;
 
                 db.Article.create(result)
                     .then(function (dbArticle) {
