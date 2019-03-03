@@ -58,7 +58,7 @@ app.get("/", (req, res) => {
 
 //Getting scraped data
 app.get("/scrape", (req, res) => {
-    axios.get("https://news.northwestern.edu/") 
+    axios.get("https://news.northwestern.edu/")
         .then(response => {
             let $ = cheerio.load(response.data);
 
@@ -75,8 +75,8 @@ app.get("/scrape", (req, res) => {
                 //IMPORTANT - hrefs for certain links only produced a relative path
                 // if statement below adds 'www.news.northwestern.edu' to any url result that doesn't produce a complete URL
                 let linkURL = $(this)
-                .children("a")
-                .attr("href");
+                    .children("a")
+                    .attr("href");
 
                 if (linkURL[0] === '/') {
                     linkURL = 'https://news.northwestern.edu' + linkURL;
@@ -92,10 +92,15 @@ app.get("/scrape", (req, res) => {
                     });
             });
 
-            res.send("Scrape Complete");
+            res.send("Scrape Complete <br> <a href='/'>Go Back</a>");
+
 
         });
+
 });
+
+
+////DB
 
 // Grabbing all articles from db
 app.get("/articles", (req, res) => {

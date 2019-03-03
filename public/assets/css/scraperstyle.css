@@ -12,6 +12,24 @@ body { background-color: #F2F6D0 }
 .jumbotron {
 background-color: #563d7c !important;
 }
+#article-btn {
+    
+    float: right;
+    background-color: #563d7c;
+    border-color: black;
+}
+.card {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.card-text{
+  word-wrap: break-word;
+}
+
+a {
+  color: black !important;
+}
 
 /* #articles {
   display: inline-block;
